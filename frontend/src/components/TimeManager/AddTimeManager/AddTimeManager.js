@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import "./AddTimeManager.css";
 
-const apiBaseUrl = process.env.REACT_APP_API_BASE_URL;
 
 function AddTimeManager() {
+  const apiBaseUrl = process.env.REACT_APP_API_BASE_URL;
   const [activity, setActivity] = useState('');
   const [startTime, setStartTime] = useState('');
   const [endTime, setEndTime] = useState('');
@@ -168,13 +169,20 @@ function AddTimeManager() {
   };
 
   return (
-    <div>
-      <h1>Add Time Manager Record</h1>
+    <div className="add-time-manager-container">
+      <h1 className="add-time-manager-title">New activity</h1>
       <form>
         <label>
           Activity:
-          <select value={activity} onChange={(e) => setActivity(e.target.value)} required>
-            <option value="" disabled>Select Activity</option>
+          <select
+            className="add-time-manager-select"
+            value={activity}
+            onChange={(e) => setActivity(e.target.value)}
+            required
+          >
+            <option value="" disabled>
+              Select Activity
+            </option>
             <option value="Maraqi">Maraqi</option>
             <option value="MDA">MDA</option>
             <option value="Study">Study</option>
@@ -182,24 +190,51 @@ function AddTimeManager() {
           </select>
         </label>
         <br />
-        <button type="button" onClick={handleStart} disabled={localStorage.getItem('timeManagerId') || !activity}>
-          Start
-        </button>
-        <button type="button" onClick={handleEnd} disabled={!localStorage.getItem('timeManagerId')}>
-          End
-        </button>
-        <button type="button" onClick={() => {
-          localStorage.removeItem('timeManagerId');
-          localStorage.removeItem('startTime');
-        }}>
+        <div className='center-buttons'>
+          <button
+            type="button"
+            className={`add-time-manager-button ${
+              localStorage.getItem('timeManagerId') || !activity
+                ? ''
+                : 'add-time-manager-button-start'
+            }`}
+            onClick={handleStart}
+            disabled={localStorage.getItem('timeManagerId') || !activity}
+          >
+            Start
+          </button>
+          <button
+            type="button"
+            className={`add-time-manager-button ${
+              localStorage.getItem('timeManagerId')
+                ? 'add-time-manager-button-end'
+                : ''
+            }`}
+            onClick={handleEnd}
+            disabled={!localStorage.getItem('timeManagerId')}
+          >
+            End
+          </button>
+        </div>
+        {/* <button
+          type="button"
+          className="add-time-manager-button"
+          onClick={() => {
+            localStorage.removeItem('timeManagerId');
+            localStorage.removeItem('startTime');
+          }}
+        >
           Reset
-        </button>
+        </button> */}
       </form>
-      {elapsedTime && <div>Elapsed Time: {elapsedTime}</div>}
-      {message && <div style={{ color: 'green' }}>{message}</div>}
-      {error && <div style={{ color: 'red' }}>{error}</div>}
-    </div>
+      {elapsedTime && (
+        <div className="add-time-manager-elapsed-time">{elapsedTime}</div>
+      )}
+      {/* {message && <div className="add-time-manager-message">{message}</div>}
+      {error && <div className="add-time-manager-error">{error}</div>} */}
+  </div>
   );
+
 }
 
 export default AddTimeManager;
