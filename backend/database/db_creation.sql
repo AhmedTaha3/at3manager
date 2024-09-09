@@ -13,3 +13,14 @@ CREATE TABLE timeManager (
     date DATE
 );
 
+CREATE TABLE categories (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255)
+);
+
+CREATE TABLE activities (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255),
+    category_id INT,
+    FOREIGN KEY (category_id) REFERENCES categories(id)
+);

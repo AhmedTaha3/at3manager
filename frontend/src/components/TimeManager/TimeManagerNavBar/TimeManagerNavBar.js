@@ -41,6 +41,12 @@ const TimeManagerNavBar = () => {
                         className={`main-button ${activeSection === '/timemanager/activities' ? 'active' : ''}`}>
                         Activities
                     </Button>
+                    <Button 
+                        color="inherit" 
+                        onClick={() => navigate('/timemanager/configuration')} 
+                        className={`main-button ${activeSection === '/timemanager/configuration' ? 'active' : ''}`}>
+                        Configuration
+                    </Button>
                 </Toolbar>
             </AppBar>
                 <Outlet />

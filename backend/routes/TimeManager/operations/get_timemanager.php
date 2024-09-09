@@ -1,6 +1,6 @@
 <?php
 header('Content-Type: application/json');
-include '../database/db_connection.php'; // include your DB connection file
+include '../../../database/db_connection.php'; // include your DB connection file
 header('Access-Control-Allow-Origin: *');
 header('Content-Type: application/json');
 header('Access-Control-Allow-Methods: GET, POST, OPTIONS');

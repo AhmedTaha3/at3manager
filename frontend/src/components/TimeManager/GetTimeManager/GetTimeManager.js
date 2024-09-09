@@ -11,7 +11,7 @@ function GetTimeManager() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`${apiBaseUrl}/at3manager/backend/routes/get_timemanager.php`);
+        const response = await axios.get(`${apiBaseUrl}/at3manager/backend/routes/TimeManager/operations/get_timemanager.php`);
         setData(response.data);
       } catch (error) {
         setError(error);
