@@ -4,6 +4,7 @@ import GetTimeManager from './components/TimeManager/GetTimeManager/GetTimeManag
 import AddTimeManager from './components/TimeManager/AddTimeManager/AddTimeManager';
 import ConfigureTimeManager from './components/TimeManager/ConfigureTimeManager/ConfigureTimeManager';
 import TimeManagerNavBar from './components/TimeManager/TimeManagerNavBar/TimeManagerNavBar';
+import GanttChart from './components/TimeManager/GetTimeManager/GanttChart/GanttChart';
 
 import './App.css';
 
@@ -15,6 +16,7 @@ function App() {
             <Route path="/timemanager/add-activity" element={<AddTimeManager/>}/>
             <Route path="/timemanager/activities" element={<GetTimeManager/>}/>
             <Route path="/timemanager/configuration" element={<ConfigureTimeManager/>}/>
+            <Route path="/timemanager/ganttchart" element={<GanttChart/>}/>
           </Route>
         </Routes>
     </Router>

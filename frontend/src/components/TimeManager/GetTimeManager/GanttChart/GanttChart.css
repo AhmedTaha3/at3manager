@@ -1,0 +1,119 @@
+.gantt-chart-container {
+  padding: 20px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f4f4f4;
+  border-radius: 10px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+.gantt-chart-header {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.filter-controls {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+
+.filter-select {
+  padding: 10px;
+  border: 1px solid #b93131;
+  border-radius: 8px;
+  background-color: #fff;
+  color: #333;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+.filter-select:hover {
+  background-color: #e5e5e5;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.filter-date {
+  padding: 8px 12px;
+  border: 1px solid #b93131;
+  border-radius: 8px;
+  background-color: #fff;
+  color: #333;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+.filter-date:hover {
+  background-color: #e5e5e5;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.info-data {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: #b93131;
+  color: #fff;
+  border-radius: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  font-weight: bold;
+  border: 2px solid #b93131;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.info-data:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.custom-multi-select {
+  display: flex;
+  flex-direction: column;
+  max-height: 200px;
+  overflow-y: auto;
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 4px;
+  background-color: #fff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.checkbox-label input[type="checkbox"] {
+  margin-right: 10px;
+  accent-color: #b93131; /* Custom checkbox color */
+}
+
+.checkbox-label input[type="checkbox"]:checked {
+  border-color: #b93131;
+}
+
+.checkbox-label:hover {
+  color: #b93131;
+}
+
+.custom-tooltip {
+  background: #ffffff;
+  padding: 10px;
+  border: 1px solid #b93131;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.tooltip-info {
+  margin-top: 10px;
+  padding: 10px;
+  border: 1px solid #b93131;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}

@@ -100,12 +100,12 @@ const ConfigureTimeManager = () => {
         <div className="configure-time-manager">
             <form className="configure-form" onSubmit={handleSubmit}>
                 {!isEditing ? (
-                    <div className='form-header'>
-                        <h3>Add a Category</h3>
+                    <div className='add-time-manager-title'>
+                        <h1>Add a Category</h1>
                     </div>
                 ) : (
-                    <div className='form-header'>
-                        <h3>Edit a Category</h3>
+                    <div className='add-time-manager-title'>
+                        <h1>Edit a Category</h1>
                     </div>
                 )}
                 <label>Category:</label>
@@ -150,7 +150,7 @@ const ConfigureTimeManager = () => {
 
                 <div className='button-container'>
                     <button className="add-activity-button" type="submit">
-                        {isEditing ? 'Update Category' : 'Add Category'}
+                        {isEditing ? 'Update Category' : 'Save Category'}
                     </button>
                 </div>
             </form>

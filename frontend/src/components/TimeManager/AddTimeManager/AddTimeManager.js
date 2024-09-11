@@ -189,7 +189,6 @@ function AddTimeManager() {
           id,
           endTime: end,
           duration,
-          category
         },
         {
           headers: {

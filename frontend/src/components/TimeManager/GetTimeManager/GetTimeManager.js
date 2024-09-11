@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-
+import GanttChart from './GanttChart/GanttChart';
 const apiBaseUrl = process.env.REACT_APP_API_BASE_URL;
 
 function GetTimeManager() {
@@ -33,7 +33,7 @@ function GetTimeManager() {
 
   return (
     <div>
-      <h1>Time Manager Data</h1>
+      {/* <h1>Time Manager Data</h1>
       <table>
         <thead>
           <tr>
@@ -59,7 +59,8 @@ function GetTimeManager() {
             </tr>
           ))}
         </tbody>
-      </table>
+      </table> */}
+      <GanttChart/>
     </div>
   );
 }
