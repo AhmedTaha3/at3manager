@@ -278,3 +278,10 @@
     background-color: #a02e2e; /* Darker shade on hover */
     transform: scale(1.05); /* Zoom effect on hover */
 }
+
+.date{
+    padding: 10px;
+    font-size: 1em;
+    border: 1px solid #b93131;
+    border-radius: 5px;
+}
