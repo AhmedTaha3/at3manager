@@ -115,17 +115,23 @@ const Database = () => {
     };
     //display date
     const displayTime = (date) => {
-        // Check if the input is a valid Date object
+        // Convert the input to a Date object
         const dateObj = new Date(date);
         if (isNaN(dateObj.getTime())) {
             console.error('Invalid date:', date);
             return 'Invalid time'; // Handle invalid date scenario
         }
-        
-        // Extract the time part in 'HH:MM:SS' format
-        const time = dateObj.toISOString().split('T')[1].split('.')[0];
+    
+        // Get hours, minutes, and seconds in local time
+        const hours = String(dateObj.getHours()).padStart(2, '0'); // Pad with leading zero if needed
+        const minutes = String(dateObj.getMinutes()).padStart(2, '0');
+        const seconds = String(dateObj.getSeconds()).padStart(2, '0');
+    
+        // Construct the time string in 'HH:MM:SS' format
+        const time = `${hours}:${minutes}:${seconds}`;
         return time;
     };
+    
     
     // fetch categories and activities
   useEffect(() => {
