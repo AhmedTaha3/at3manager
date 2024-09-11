@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate, Outlet, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import './ConfigureTimeManager.css';
 
 const ConfigureTimeManager = () => {
+    const navigate = useNavigate();
     const [categories, setCategories] = useState([]);
     const [form, setForm] = useState({ category: '', activities: [''] });
     const [isEditing, setIsEditing] = useState(false);
@@ -101,7 +103,7 @@ const ConfigureTimeManager = () => {
             <form className="configure-form" onSubmit={handleSubmit}>
                 {!isEditing ? (
                     <div className='add-time-manager-title'>
-                        <h1>Add a Category</h1>
+                        <h1 onClick={() => navigate('/timemanager/activities')}>Add a Category</h1>
                     </div>
                 ) : (
                     <div className='add-time-manager-title'>

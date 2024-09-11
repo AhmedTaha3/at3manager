@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate, Outlet, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import "./AddTimeManager.css";
 
 function AddTimeManager() {
+  const navigate = useNavigate();
   const apiBaseUrl = process.env.REACT_APP_API_BASE_URL;
   const apiUrl = `${apiBaseUrl}/at3manager/backend/routes/TimeManager/configuration`;
   const [activity, setActivity] = useState('');
@@ -231,7 +233,7 @@ function AddTimeManager() {
 
   return (
 <div className="add-time-manager-container">
-  <h1 className="add-time-manager-title">New activity</h1>
+  <h1 className="add-time-manager-title" onClick={() => navigate('/timemanager/database')}>New activity </h1>
   <form>
     {/* Category Select */}
     <label>

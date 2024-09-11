@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate, Outlet, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import './GanttChart.css';
 
 const GanttChart = () => {
+  const navigate = useNavigate();
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -164,7 +166,7 @@ const GanttChart = () => {
 
   return (
     <div className="gantt-chart-container">
-      <h1 className="add-time-manager-title">Daily Activities</h1>
+      <h1 className="add-time-manager-title" onClick={() => navigate('/timemanager/configuration')}>Daily Activities</h1>
       <div className="gantt-chart-header">
         {/* Filter Controls */}
         <div className="filter-controls">
@@ -186,7 +188,7 @@ const GanttChart = () => {
 
       {/* Gantt Chart */}
       <div className="gantt-chart">
-        <ResponsiveContainer width="100%" height={500}>
+        <ResponsiveContainer width="100%" height={200}>
           <BarChart
             layout="vertical"
             data={adjustedData}

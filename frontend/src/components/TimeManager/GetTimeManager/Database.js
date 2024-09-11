@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { useNavigate, Outlet, useLocation } from 'react-router-dom';
 import '../ConfigureTimeManager/ConfigureTimeManager.css'; // Use the same styles as ConfigureTimeManager
 
 const Database = () => {
+    const navigate = useNavigate();
     const [timeManagers, setTimeManagers] = useState([]);
     const [form, setForm] = useState({ activity: '', category: '', startTime: '', endTime: '', duration: '', day: '', date: '' });
     const [isEditing, setIsEditing] = useState(false);
@@ -185,12 +187,12 @@ const Database = () => {
         <div className="configure-time-manager">
             <form className="configure-form" onSubmit={handleSubmit}>
                 <div className='add-time-manager-title'>
-                    <h1>{isEditing ? 'Edit Activity' : 'Add new Activity'}</h1>
+                    <h1 onClick={() => navigate('/timemanager/add-activity')}>{isEditing ? 'Edit Activity' : 'Add new Activity'}</h1>
                 </div>
                 
                 {/* Input fields for the form */}
                 <label>
-                    Category:
+                    Category: {isEditing && form.category}
                     <select
                         className="add-time-manager-select"
                         value={selectedCategory}
@@ -210,7 +212,7 @@ const Database = () => {
 
                     {/* Activity Select */}
                     <label>
-                    Activity:
+                    Activity: {isEditing && form.activity}
                     <select
                         className="add-time-manager-select"
                         value={selectedActivity}
@@ -264,13 +266,13 @@ const Database = () => {
             <table className="styled-table">
                 <thead>
                     <tr>
+                        <th>Date</th>
+                        <th>Day</th>
                         <th>Activity</th>
+                        <th>Duration</th>
                         <th>Category</th>
                         <th>Start Time</th>
                         <th>End Time</th>
-                        <th>Duration</th>
-                        <th>Day</th>
-                        <th>Date</th>
                         <th>Update</th>
                         <th>Delete</th>
                     </tr>
@@ -279,13 +281,13 @@ const Database = () => {
                     {Array.isArray(timeManagers) && timeManagers.length > 0 ? (
                         timeManagers.map(timeManager => (
                             <tr key={timeManager.id}>
+                                <td>{timeManager.date}</td>
+                                <td>{timeManager.day}</td>
                                 <td>{timeManager.activity}</td>
+                                <td>{timeManager.duration}</td>
                                 <td>{timeManager.category}</td>
                                 <td>{displayTime(timeManager.startTime)}</td>
-                                <td>{displayTime(timeManager.endTime)}</td>
-                                <td>{timeManager.duration}</td>
-                                <td>{timeManager.day}</td>
-                                <td>{timeManager.date}</td>
+                                <td>{displayTime(timeManager.endTime)}</td> 
                                 <td>
                                     <button 
                                         className='edit-category-button' 
