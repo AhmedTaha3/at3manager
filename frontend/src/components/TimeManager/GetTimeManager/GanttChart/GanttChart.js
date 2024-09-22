@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate, Outlet, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import './GanttChart.css';
@@ -13,13 +13,10 @@ const GanttChart = () => {
   const [filters, setFilters] = useState({ categories: [], date: new Date().toISOString().split('T')[0] });
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState([]);
-  const [activities, setActivities] = useState([]);
-  const [category, setCategory] = useState('');
 
   const apiBaseUrl = process.env.REACT_APP_API_BASE_URL;
   const apiUrl = `${apiBaseUrl}/at3manager/backend/routes/TimeManager/configuration`;
 
-  // Fetch categories and activities
   useEffect(() => {
     fetchCategories();
   }, []);
@@ -46,7 +43,10 @@ const GanttChart = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`${apiBaseUrl}/at3manager/backend/routes/TimeManager/operations/get_timemanager.php`);
+        // Use filters.date as a query parameter to retrieve data by date
+        const response = await axios.get(
+          `${apiBaseUrl}/at3manager/backend/routes/TimeManager/operations/get_timemanager_by_date.php?date=${filters.date}`
+        );
         setData(response.data);
       } catch (error) {
         setError(error);
@@ -56,7 +56,7 @@ const GanttChart = () => {
     };
 
     fetchData();
-  }, [filters]); // Re-run fetch when filters change
+  }, [filters]);
 
   const filteredData = data.filter((item) => {
     const itemDate = new Date(item.startTime).toISOString().split('T')[0];
@@ -89,16 +89,16 @@ const GanttChart = () => {
     return inputData.map((item) => {
       const startHour = convertTimeToHours(item.startTime);
       const endHour = convertTimeToHours(item.endTime);
-      
+
       // Calculate the duration, taking into account crossing midnight
       const duration = endHour >= startHour ? endHour - startHour : endHour - startHour + 24;
-      
+
       return {
         activity: item.activity,
         startHour,
         duration,
         startTime: item.startTime.split(' ')[1], // Extract time part only
-        endTime: item.endTime.split(' ')[1] // Extract time part only
+        endTime: item.endTime.split(' ')[1], // Extract time part only
       };
     });
   };
@@ -110,16 +110,16 @@ const GanttChart = () => {
     start: item.startHour,
     duration: item.duration,
     startTime: item.startTime,
-    endTime: item.endTime
+    endTime: item.endTime,
   }));
 
   const totalDuration = filteredData.reduce((acc, item) => {
     const startHour = convertTimeToHours(item.startTime);
     const endHour = convertTimeToHours(item.endTime);
-  
+
     // Calculate the duration, considering the midnight crossing
     const duration = endHour >= startHour ? endHour - startHour : endHour - startHour + 24;
-  
+
     return acc + duration;
   }, 0);
 
@@ -128,10 +128,18 @@ const GanttChart = () => {
       const { activity, startTime, endTime, duration } = payload[0].payload;
       return (
         <div className="custom-tooltip">
-          <p><strong>Activity:</strong> {activity}</p>
-          <p><strong>Start Time:</strong> {startTime}</p>
-          <p><strong>End Time:</strong> {endTime}</p>
-          <p><strong>Duration:</strong> {formatDuration(duration)}</p>
+          <p>
+            <strong>Activity:</strong> {activity}
+          </p>
+          <p>
+            <strong>Start Time:</strong> {startTime}
+          </p>
+          <p>
+            <strong>End Time:</strong> {endTime}
+          </p>
+          <p>
+            <strong>Duration:</strong> {formatDuration(duration)}
+          </p>
         </div>
       );
     }
@@ -166,13 +174,16 @@ const GanttChart = () => {
 
   return (
     <div className="gantt-chart-container">
-      <h1 className="add-time-manager-title" onClick={() => navigate('/timemanager/configuration')}>Daily Activities</h1>
+      <h1 className="add-time-manager-title">Daily Activities</h1>
+      <div className='history-button'>
+        <button className="remove-category-button" type="button"  onClick={() => navigate('/timemanager/database')}>History</button>
+      </div>
       <div className="gantt-chart-header">
         {/* Filter Controls */}
         <div className="filter-controls">
-          <div className='filter-select'>
+          <div className="filter-select">
             <MultiSelectCheckbox
-              options={categories.map(category => category.name)}
+              options={categories.map((category) => category.name)}
               selectedOptions={selectedCategory}
               onChange={setSelectedCategory}
             />
@@ -208,10 +219,18 @@ const GanttChart = () => {
       {/* Display additional information on click */}
       {tooltipData && (
         <div className="tooltip-info">
-          <p><strong>Activity:</strong> {tooltipData.activity}</p>
-          <p><strong>Start Time:</strong> {tooltipData.startTime}</p>
-          <p><strong>End Time:</strong> {tooltipData.endTime}</p>
-          <p><strong>Duration:</strong> {formatDuration(tooltipData.duration)}</p>
+          <p>
+            <strong>Activity:</strong> {tooltipData.activity}
+          </p>
+          <p>
+            <strong>Start Time:</strong> {tooltipData.startTime}
+          </p>
+          <p>
+            <strong>End Time:</strong> {tooltipData.endTime}
+          </p>
+          <p>
+            <strong>Duration:</strong> {formatDuration(tooltipData.duration)}
+          </p>
         </div>
       )}
     </div>

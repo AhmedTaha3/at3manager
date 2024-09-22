@@ -233,7 +233,11 @@ function AddTimeManager() {
 
   return (
 <div className="add-time-manager-container">
-  <h1 className="add-time-manager-title" onClick={() => navigate('/timemanager/database')}>New activity </h1>
+  <h1 className="add-time-manager-title">New activity </h1>
+  <div className='history-button'>
+    <button className="remove-category-button" type="button"  onClick={() => navigate('/timemanager/database')}>History</button>
+    <button className="remove-category-button" type="button"  onClick={() => navigate('/timemanager/configuration')}>Configuration</button>
+  </div>
   <form>
     {/* Category Select */}
     <label>

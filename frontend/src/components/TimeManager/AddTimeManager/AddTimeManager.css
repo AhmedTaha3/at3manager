@@ -114,3 +114,34 @@
     display: flex;
     justify-content: space-between;
   }
+
+  .remove-activity-button {
+    background-color: #de0000;
+}
+.remove-activity-button:hover {
+  background-color: #a00;
+}
+.remove-category-button {
+  display: inline-flex;
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 90px;
+  background-color: #b93131; /* Color theme */
+  color: white;
+  cursor: pointer;
+  text-align: center;
+  white-space: nowrap;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  width: fit-content;
+}
+.remove-category-button:hover {
+  background-color: #a02e2e; /* Darker red for hover effect */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.history-button{
+  display: flex;
+  justify-content: space-around;
+}

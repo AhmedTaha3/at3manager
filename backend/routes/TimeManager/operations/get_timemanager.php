@@ -6,7 +6,7 @@ header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
 header('Access-Control-Allow-Headers: Content-Type, Authorization');
 
 // Corrected SQL query with proper ordering clause
-$sql = "SELECT * FROM timeManager ORDER BY Date DESC";
+$sql = "SELECT * FROM timeManager ORDER BY startTime DESC";
 $result = $conn->query($sql);
 
 if ($result->num_rows > 0) {

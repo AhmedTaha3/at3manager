@@ -25,3 +25,22 @@ CREATE TABLE activities (
     FOREIGN KEY (category_id) REFERENCES categories(id)
 );
 
+CREATE TABLE money_transactions (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    operation VARCHAR(255),
+    value FLOAT,
+    date DATE,
+    category VARCHAR(255),
+    account VARCHAR(255)
+);
+
+CREATE TABLE money_accounts (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    balance FLOAT,
+    name VARCHAR(255)
+);
+
+CREATE Table money_categories (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255)
+);

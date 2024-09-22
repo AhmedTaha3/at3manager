@@ -187,7 +187,7 @@ const Database = () => {
         <div className="configure-time-manager">
             <form className="configure-form" onSubmit={handleSubmit}>
                 <div className='add-time-manager-title'>
-                    <h1 onClick={() => navigate('/timemanager/add-activity')}>{isEditing ? 'Edit Activity' : 'Add new Activity'}</h1>
+                    <h1>{isEditing ? 'Edit Activity' : 'Add new Activity'}</h1>
                 </div>
                 
                 {/* Input fields for the form */}
