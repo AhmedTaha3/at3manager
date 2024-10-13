@@ -1,0 +1,279 @@
+.engagement-manager {
+    display: flex;
+    flex-direction: row;
+    max-width: 99%;
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-top: 10px;
+    padding: 20px;
+    border: 1px solid #b93131;
+    background-color: rgba(255, 255, 255, 0.8); /* Slightly opaque white background */
+    animation: fadeIn 1s ease-in-out;
+}
+
+.engagement-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background-color: rgba(255, 255, 255, 0.8); /* Slightly opaque white background */
+    border-radius: 2px; /* Rounded corners */
+    padding: 20px; /* Add some padding for better spacing */
+    margin-bottom: 30px; /* Space below the form */
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.05); /* Subtle shadow for depth */
+    backdrop-filter: blur(5px); /* Slight blur effect for a smoother look */
+}
+
+.add-engagement-title{
+    color: #b93131;
+    text-align: center;
+    cursor: pointer;
+    margin-top: -40px;
+    margin-bottom: -20px;
+    font-size: 20px;
+    font-weight: bolder;
+}
+
+.engagement-form input,
+.engagement-form select {
+    padding: 10px;
+    font-size: 1em;
+    border: 1px solid #b93131;
+    border-radius: 5px;
+}
+
+
+
+.engagement-table .styled-table {
+    /* position: absolute; */
+    margin:0px;
+    margin-top: 20px;
+    width: 50% !important;
+    border-collapse: collapse;
+    font-family: 'Arial', sans-serif;
+    font-size: 16px;
+    background-color: #fff; /* Ensure the table background matches the page */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Add a subtle shadow to lift the table off the page */
+    border-radius: 8px; /* Rounded corners for a softer look */
+    overflow: hidden; /*Ensures rounded corners apply*/
+}
+
+.engagement-table .styled-table thead {
+    background-color: #b93131; /* Color theme */
+    color: #fff; /* White text for contrast */
+    text-align: left;
+    font-weight: bold;
+    border-radius: 8px 8px 0 0; /* Rounded corners at the top */
+}
+
+.engagement-table .styled-table thead th {
+    white-space: nowrap;
+    padding: 8px;
+    font-size: 16px;
+    font-weight: bolder;
+    text-transform: uppercase; /* Make text uppercase for a modern look */
+    letter-spacing: 0.1em; /* Slight spacing between letters for readability */
+    transition: background-color 0.3s ease; /* Smooth background color transition */
+}
+
+.engagement-table .styled-table thead th:hover {
+    background-color: #a02e2e; /* Slightly darker red on hover */
+}
+
+.engagement-table .styled-table th, .styled-table td {
+    border-bottom: 1px solid #ddd;
+}
+
+.engagement-table .styled-table thead th:first-child {
+    border-top-left-radius: 8px; /* Rounded top-left corner */
+}
+
+.engagement-table .styled-table thead th:last-child {
+    border-top-right-radius: 8px; /* Rounded top-right corner */
+}
+
+.engagement-table .styled-table th, .engagement-table .styled-table td {
+    white-space: nowrap;
+    padding: 8px 8px; /* Slightly wider padding for better spacing */
+    text-align: left;
+    border-bottom: 1px solid #e0e0e0; /* Lighten the border color for a more modern look */
+    transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition on hover */
+}
+
+.engagement-table .styled-table th {
+    background-color: #f9f9f9; /* Slightly lighter background for the header */
+    color: #333; /* Darker text color for better readability */
+    font-weight: 600; /* Bold the header text */
+    text-transform: uppercase; /* Make the header text uppercase */
+    letter-spacing: 0.05em; /* Add some spacing between letters */
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+.engagement-table .styled-table tbody tr:hover {
+    background-color: rgba(185, 49, 49, 0.1); /* Softer hover effect */
+    cursor: pointer;
+    transform: scale(1.02); /* Slightly enlarge the row on hover */
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth hover effect */
+}
+
+.engagement-table .styled-table tbody tr:nth-child(even) {
+    background-color: #f3f3f3; /* Zebra striping for easier readability */
+}
+
+.engagement-table .styled-table tbody tr {
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth transition for rows */
+}
+
+.engagement-table .styled-table td {
+    color: #555; /* Softer text color for readability */
+}
+
+.engagement-table .styled-table tbody tr:active {
+    background-color: rgba(185, 49, 49, 0.3); /* Darken the background on click */
+    transform: scale(0.98); /* Slightly shrink the row on click for feedback */
+    transition: transform 0.1s ease; /* Quick response on click */
+}
+
+.engagement-table .styled-table tbody tr.hover-edit {
+    background-color: rgba(76, 175, 80, 0.2); /* Green for edit hover */
+}
+
+.engagement-table .styled-table tbody tr.hover-delete {
+    background-color: rgba(244, 67, 54, 0.2); /* Red for delete hover */
+}
+
+.engagement-table .button-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    margin: 0px;
+}
+
+.submit-button-container{
+    display: flex;
+    justify-content: center;
+}
+
+.add-engagement-button {
+    padding: 8px 12px;
+    font-size: 14px;
+    border: none;
+    border-radius: 5px;
+    color: #fff;
+    cursor: pointer;
+    margin-left: 20px;
+    transition: background-color 0.3s ease;
+    background-color: #2e8b57;
+  }
+
+.engagement-table .edit-engagement-button {
+    display: inline-flex;
+    padding: 5px 10px;
+    margin-right: 10px;
+    font-size: 16px;
+    border: none;
+    border-radius: 100%;
+    background-color: #2e8b57;
+    color: white;
+    cursor: pointer;
+    text-align: center;
+    white-space: nowrap;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+    transition: background-color 0.5s ease, box-shadow 0.5s ease;
+}
+
+.engagement-manager .edit-category-button:hover,
+.engagement-manager .button-admin-delete:hover {
+    transform: scale(1.05); /* Slightly enlarge the row on hover */
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth hover effect */
+}
+
+.engagement-table .remove-engagement-button {
+    display: inline-flex;
+    padding: 5px 10px;
+    margin-left: 5px;
+    font-size: 16px;
+    border: none;
+    border-radius: 100%;
+    background-color: #de0000;
+    color: white;
+    cursor: pointer;
+    text-align: center;
+    white-space: nowrap;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.engagement-manager .remove-engagement-button:hover {
+    background-color: #a00; /* Darker red for hover effect */
+}
+
+/* Styling for the checkbox container to align label and checkbox horizontally */
+.checkbox-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+/* Styling for the checkbox */
+.checkbox-container input[type="checkbox"] {
+    margin-right: 10px; /* Space between the checkbox and the label */
+}
+
+/* Keyframes for the fadeIn animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.configure-engagements {
+    display: flex;
+    justify-content: space-between;
+}
+
+.engagement-table {
+    width: 50%; /* Your table width */
+    display: flex;
+    flex-direction: row;
+}
+
+.weekly-gantt-chart-container {
+    width: 50%;
+    margin-left:5px;
+    position: relative;
+    top:0px;
+}
+
+.engagement-container{
+    display: flex;
+    flex-direction: column;
+}
+
+.container-form-and-graph{
+    /* display: flex; */
+    width: 100%;
+}
+
+.periodic-container{
+    display: inline;
+}
+
+.periodic-inputs {
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* Space between elements */
+    background-color: rgba(255, 255, 255, 0.8); /* Slightly opaque white background */
+    border: 1px solid #b93131; /* Match border color */
+    padding: 15px; /* Padding around inputs */
+    margin-top: 10px; /* Space above the section */
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.05); /* Subtle shadow for depth */
+    border-radius: 2px; /* Rounded corners */
+    max-width: 300px; /* Adjust width as needed */
+}

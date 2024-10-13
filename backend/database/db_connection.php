@@ -3,7 +3,7 @@
 // $servername = "sql306.infinityfree.com";
 // $username = "if0_37004091"; // Utilisateur MySQL
 // $password = "DuUW9izL2U"; // Mot de passe MySQL
-// $database = "if0_37004091_laboratoire"; // Nom de votre base de données
+// $database = "if0_37004091_at3manager"; // Nom de votre base de données
 
 // Paramètres de connexion à la base de données MySQL Pour le site en local
 $servername = "localhost";

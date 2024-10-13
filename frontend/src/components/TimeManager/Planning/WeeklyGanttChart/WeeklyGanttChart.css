@@ -1,0 +1,115 @@
+.gantt-chart-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin-top: 20px;
+    position: relative;
+}
+
+/* Time axis (every 6 hours), aligned with gantt-row-activities */
+.gantt-time-axis {
+    display: flex;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.gantt-row-label {
+    width: 180px; /* Same width as Y-axis labels for each day */
+    text-align: left;
+    font-weight: bold;
+    padding-right: 10px;
+}
+
+.gantt-time-labels {
+    display: flex;
+    flex-grow: 1;
+    position: relative;
+}
+
+.gantt-hour-label-center {
+    flex-grow: 1;
+    text-align: center;
+    width: calc(100% / 5); /* Divides the width into 4 sections for 6-hour intervals */
+    padding-left: 0px;
+}
+
+.gantt-hour-label-right {
+    flex-grow: 1;
+    text-align: end;
+    width: calc(100% / 5); /* Divides the width into 4 sections for 6-hour intervals */
+    padding-left: 0px;
+}
+
+.gantt-hour-label-left {
+    flex-grow: 1;
+    text-align: start;
+    width: calc(100% / 5); /* Divides the width into 4 sections for 6-hour intervals */
+    padding-left: 0px;
+}
+
+/* Row for each day's activities */
+.gantt-row {
+    display: flex;
+    align-items: center;
+    /* margin-bottom: 10px; */
+    position: relative;
+    height: 50px;
+}
+
+/* Unified background for all rows */
+.gantt-row-activities {
+    position: relative;
+    flex-grow: 1;
+    /* background-color: #eef2f7; Light background */
+    border: 0.05px dashed #ddd;
+    height: 100%;
+    background-image: linear-gradient(to right, #ddd 1px, transparent 1px, transparent 4px); /* Creates dashed vertical lines */
+    background-size: calc(100% / 4); /* Adjusts line intervals to match the 6-hour time steps */
+}
+
+/* Styling for the activity bars */
+.gantt-bar {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    background-color: #b93131;
+    color: white;
+    font-weight: bold;
+    text-align: center;
+    overflow: hidden;
+    white-space: nowrap;
+    padding: 5 px;
+    padding-top: 15px;
+    font-size: 12px;
+    /* border-radius: 4px; */
+    transition: background-color 0.3s;
+}
+
+.gantt-bar:hover {
+    background-color: #852626;
+    cursor: pointer;
+}
+
+/* Tooltip styling */
+.custom-tooltip {
+    position: absolute;
+    width: 150px;
+    z-index: 10;
+    padding: 10px;
+    border: 1px solid #b93131;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    pointer-events: none;
+    transform: translate(-395%, -50%);
+}
+
+.custom-tooltip h4 {
+    margin: 0;
+    font-size: 16px;
+}
+
+.custom-tooltip p {
+    margin: 5px 0;
+    font-size: 16px;
+}

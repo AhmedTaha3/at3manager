@@ -31,15 +31,21 @@ const TimeManagerNavBar = () => {
                 <Toolbar className="main-page-container">
                     <Button 
                         color="inherit" 
+                        onClick={() => navigate('/timemanager/planning')} 
+                        className={`main-button ${activeSection === '/timemanager/planning' ? 'active' : ''}`}>
+                        Planning
+                    </Button>
+                    <Button 
+                        color="inherit" 
                         onClick={() => navigate('/timemanager/add-activity')} 
                         className={`main-button ${activeSection === '/timemanager/add-activity' ? 'active' : ''}`}>
-                        New activity
+                        Tracking
                     </Button>
                     <Button 
                         color="inherit" 
                         onClick={() => navigate('/timemanager/activities')} 
                         className={`main-button ${activeSection === '/timemanager/activities' ? 'active' : ''}`}>
-                        Activities
+                        Evaluating
                     </Button>
                 </Toolbar>
             </AppBar>

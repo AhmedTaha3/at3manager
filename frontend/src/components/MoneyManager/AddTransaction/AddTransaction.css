@@ -1,0 +1,77 @@
+.add-transaction-container {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+    max-width: 400px;
+    margin: auto;
+}
+
+.add-transaction-title {
+    color: #b93131;
+    text-align: center;
+    cursor: pointer;
+}
+
+.add-transaction-button {
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    border: none;
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    margin: 5px;
+    display: inline-block;
+    transition: background-color 0.3s;
+}
+
+.add-transaction-button:disabled {
+    background-color: grey;
+    cursor: not-allowed;
+}
+
+.add-transaction-button-credit {
+    background-color: rgb(9, 97, 9); /* Green for credit (adding money) */
+}
+
+.add-transaction-button-debit {
+    background-color: rgb(218, 36, 36); /* Red for debit (removing money) */
+}
+
+.add-transaction-select {
+    width: 100%;
+    padding: 10px;
+    border: 2px solid #b93131;
+    border-radius: 5px;
+    margin-top: 10px;
+    font-size: 16px;
+    transition: all 0.3s ease;
+}
+
+.add-transaction-select:hover {
+    background-color: #f5f5f5;
+    border-color: #e63946;
+}
+
+.add-transaction-input {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    border: 2px solid #b93131;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.add-transaction-message {
+    text-align: center;
+    margin-top: 10px;
+    font-weight: bold;
+    color: green;
+}
+
+.add-transaction-error {
+    text-align: center;
+    margin-top: 10px;
+    font-weight: bold;
+    color: red;
+}
