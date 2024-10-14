@@ -4,16 +4,7 @@ USE at3manager;
 
 
 -- TIME MANAGER
-CREATE TABLE timeManager (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    activity VARCHAR(255) ,
-    category VARCHAR(255) ,
-    startTime DATETIME,
-    endTime DATETIME,
-    duration TIME,
-    day VARCHAR(255),
-    date DATE
-);
+
 
 CREATE TABLE categories (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -35,6 +26,19 @@ CREATE TABLE tasks(
     estimated_time TIME,
     worked_time TIME,
     FOREIGN KEY (activity_id) REFERENCES activities(id)
+);
+
+CREATE TABLE timeManager (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    activity VARCHAR(255) ,
+    category VARCHAR(255) , 
+    task_id INT,
+    startTime DATETIME,
+    endTime DATETIME,
+    duration TIME,
+    day VARCHAR(255),
+    date DATE,
+    FOREIGN KEY (task_id) REFERENCES tasks(id)
 );
 
 CREATE Table engagements(

@@ -47,6 +47,7 @@
     /* position: absolute; */
     margin:0px;
     margin-top: 20px;
+    margin-left: 10px;
     width: 50% !important;
     border-collapse: collapse;
     font-family: 'Arial', sans-serif;
@@ -167,6 +168,18 @@
     background-color: #2e8b57;
   }
 
+  
+.cancel-engagement-button {
+    padding: 8px 12px;
+    font-size: 14px;
+    border: none;
+    border-radius: 5px;
+    color: #fff;
+    cursor: pointer;
+    margin-left: 20px;
+    transition: background-color 0.3s ease;
+    background-color: #de0000;
+  }
 .engagement-table .edit-engagement-button {
     display: inline-flex;
     padding: 5px 10px;

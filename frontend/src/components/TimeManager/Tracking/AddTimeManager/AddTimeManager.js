@@ -6,7 +6,7 @@ import "./AddTimeManager.css";
 function AddTimeManager() {
   const navigate = useNavigate();
   const apiBaseUrl = process.env.REACT_APP_API_BASE_URL;
-  const apiUrl = `${apiBaseUrl}/at3manager/backend/routes/TimeManager/configuration`;
+  const apiUrl = `${apiBaseUrl}/at3manager/backend/routes/TimeManager/operations/Tracking`;
   const [activity, setActivity] = useState('');
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState('');
@@ -22,7 +22,10 @@ function AddTimeManager() {
   const [isStarted, setIsStarted] = useState(false);
   const [elapsedTime, setElapsedTime] = useState('');
 
-  
+  const [selectedTask, setSelectedTask] = useState('');
+  const [tasks, setTasks] = useState([]);
+  const [task, setTask] = useState([]);
+
 
   // Initialize default date and day
   useEffect(() => {
@@ -61,7 +64,7 @@ function AddTimeManager() {
 
     const fetchCategories = async () => {
         try {
-            const response = await axios.get(`${apiUrl}/get_categories.php`);
+            const response = await axios.get(`${apiUrl}/get_tracking_categories.php`);
             if (Array.isArray(response.data)) {
                 setCategories(response.data);
             } else {
@@ -74,29 +77,54 @@ function AddTimeManager() {
         }
     };
 
-    const handleCategoryChange = (e) => {
-      const categoryId = e.target.value;
-      setSelectedCategory(categoryId);
+      const handleCategoryChange = (e) => {
+        const categoryId = e.target.value;
+        setSelectedCategory(categoryId);
     
-      
-      const selectedCat = categories.find(category => category.id === categoryId);
-      const cat = selectedCat.name;
-      console.log("Selected Category ID:", cat); // Debugging
-      if (selectedCat) {
-        setActivities(selectedCat.activities);
-        setCategory(cat);
-      } else {
-        setActivities([]);
-      }
+        const selectedCat = categories.find(category => category.id === categoryId);
+        const cat = selectedCat.name;
+        console.log("Selected Category:", cat); // Debugging
+    
+        if (selectedCat) {
+            // Convert activities object to an array
+            const activitiesArray = Object.values(selectedCat.activities);
+            setActivities(activitiesArray);
+            setCategory(cat);
+        } else {
+            setActivities([]);
+        }
     };
     
     const handleActivityChange = (e) => {
       const activityId = e.target.value;
-      const selectedAct = activities.find(activity => activity.id === activityId).name;
+  
+      // Flatten the activities to easily find the selected activity by ID
+      let selectedActivity;
+      let tasksArray = [];
+  
+      for (const category of categories) {
+          if (category.activities && category.activities[activityId]) {
+              selectedActivity = category.activities[activityId];
+              tasksArray = selectedActivity.tasks ? Object.values(selectedActivity.tasks) : [];
+              break;
+          }
+      }
+  
       setSelectedActivity(activityId);
-      setActivity(selectedAct);
-      console.log("Selected Activity ID:", selectedAct); // Debugging
+      setActivity(selectedActivity.name);
+      setTasks(tasksArray);
+      console.log("Selected Activity ID:", selectedActivity.name); // Debugging
     };
+  
+  
+    const handleTaskChange = (e) => {
+      const taskId = e.target.value;
+      const selectedTask = tasks.find(task => task.id === taskId).name;
+      setSelectedTask(taskId);
+      setTask(selectedTask);
+      console.log("Selected Task ID:", selectedTask); // Debugging
+    };
+  
     
 
 
@@ -274,6 +302,24 @@ function AddTimeManager() {
         {activities.map((activity) => (
           <option key={activity.id} value={activity.id}>
             {activity.name}
+          </option>
+        ))}
+      </select>
+    </label>
+    <label>
+      Task:
+      <select
+        className="add-time-manager-select"
+        value={selectedTask}
+        onChange={handleTaskChange}
+        required
+      >
+        <option value="" disabled>
+          Select Task
+        </option>
+        {tasks.map((task) => (
+          <option key={task.id} value={task.id}>
+            {task.name}
           </option>
         ))}
       </select>

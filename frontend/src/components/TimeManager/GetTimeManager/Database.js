@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate, Outlet, useLocation } from 'react-router-dom';
-import '../ConfigureTimeManager/ConfigureTimeManager.css'; // Use the same styles as ConfigureTimeManager
+import '../Tracking/ConfigureTimeManager/ConfigureTimeManager.css'; // Use the same styles as ConfigureTimeManager
 
 const Database = () => {
     const navigate = useNavigate();

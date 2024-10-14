@@ -29,6 +29,7 @@ const Engagements = () => {
 
     const [activity, setActivity] = useState('');
     const [category, setCategory] = useState('');
+    const [taskActivities, setTaskActivities] = useState([]);
     const [categories, setCategories] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState('');
     const [selectedActivity, setSelectedActivity] = useState('');
@@ -46,6 +47,7 @@ const Engagements = () => {
         fetchEngagements();
         fetchTasks();
         fetchCategories();
+        fetchTaskActivities();
     }, []);
 
 
@@ -84,26 +86,39 @@ const Engagements = () => {
 
         if (isPeriodic) {
             if (periodType === 'daily') {
+                // Generate daily tasks
                 for (let i = 0; i < dailyPeriod; i++) {
                     const newData = { ...requestData, date: incrementDate(form.date, i, 'days') };
                     requestDataList.push(newData);
                 }
             } else if (periodType === 'weekly') {
+                // Generate weekly tasks
                 for (let i = 0; i < weeklyPeriod; i++) {
                     const newData = { ...requestData, date: incrementDate(form.date, i * 7, 'days') };
                     requestDataList.push(newData);
                 }
             } else if (periodType === 'both') {
-                let dailyList = [];
+                const dailyList = [];
+            
+                // Generate daily tasks first
                 for (let i = 0; i < dailyPeriod; i++) {
-                    dailyList.push({ ...requestData, date: incrementDate(form.date, i, 'days') });
+                    const dailyData = { ...requestData, date: incrementDate(form.date, i, 'days') };
+                    dailyList.push(dailyData);
+                    requestDataList.push(dailyData); // Add the daily task to the final list
                 }
-                for (let i = 0; i < weeklyPeriod; i++) {
-                    dailyList.forEach((dailyData) => {
-                        requestDataList.push({ ...dailyData, date: incrementDate(dailyData.date, i * 7, 'days') });
-                    });
-                }
+            
+                // Apply weekly logic to each daily task
+                dailyList.forEach(dailyData => {
+                    for (let i = 1; i <= weeklyPeriod; i++) { // Start from 1 to avoid re-adding the same date
+                        const weeklyData = { 
+                            ...dailyData, 
+                            date: incrementDate(dailyData.date, i * 7, 'days') 
+                        };
+                        requestDataList.push(weeklyData);
+                    }
+                });
             }
+            
         } else {
             requestDataList.push(requestData);
         }
@@ -182,6 +197,20 @@ const Engagements = () => {
         }
     };
 
+    const fetchTaskActivities = async () => {
+        try {
+            const response = await axios.get(`${apiUrlTask}/get_activities.php`);
+            if (Array.isArray(response.data)) {
+                setTaskActivities(response.data);
+            } else {
+                setTaskActivities([]);
+            }
+        } catch (error) {
+            console.error('Error fetching TaskActivities:', error);
+            setTaskActivities([]);
+        }
+    };
+
     // Fetch categories and activities
     const fetchCategories = async () => {
         try {
@@ -239,27 +268,41 @@ const Engagements = () => {
             const weeklyCount = requestData.taskWeeklyPeriod || 0;
     
             if (periodType === 'daily') {
+                // Generate daily tasks
                 for (let i = 0; i < dailyCount; i++) {
                     const newData = { ...requestData, deadline: incrementDate(requestData.deadline, i, 'days') };
                     requestDataList.push(newData);
                 }
             } else if (periodType === 'weekly') {
+                // Generate weekly tasks
                 for (let i = 0; i < weeklyCount; i++) {
                     const newData = { ...requestData, deadline: incrementDate(requestData.deadline, i * 7, 'days') };
                     requestDataList.push(newData);
                 }
             } else if (periodType === 'both') {
+                const dailyDataList = [];
+            
+                // Generate daily tasks first
                 for (let i = 0; i < dailyCount; i++) {
-                    const newData = { ...requestData, deadline: incrementDate(requestData.deadline, i, 'days') };
-                    requestDataList.push(newData);
+                    const newDailyData = { ...requestData, deadline: incrementDate(requestData.deadline, i, 'days') };
+                    dailyDataList.push(newDailyData);
                 }
-                for (let i = 0; i < weeklyCount; i++) {
-                    requestDataList.forEach((dailyData) => {
-                        const newWeeklyData = { ...dailyData, deadline: incrementDate(dailyData.deadline, i * 7, 'days') };
+            
+                // For each daily task, apply weekly logic
+                dailyDataList.forEach(dailyTask => {
+                    requestDataList.push(dailyTask); // Add the daily task to the list first
+            
+                    // Now generate weekly tasks for each daily task
+                    for (let i = 1; i <= weeklyCount; i++) { // Starting from 1 to avoid re-adding the same date
+                        const newWeeklyData = { 
+                            ...dailyTask, 
+                            deadline: incrementDate(dailyTask.deadline, i * 7, 'days') 
+                        };
                         requestDataList.push(newWeeklyData);
-                    });
-                }
+                    }
+                });
             }
+            
         } else {
             requestDataList.push(requestData); // For non-periodic tasks
         }
@@ -334,6 +377,25 @@ const Engagements = () => {
         setTaskWeeklyPeriod(0);
         setTaskPeriodType('');
     };
+    
+    // table
+    const getActivityNameById = (activityId) => {
+        // Ensure taskActivities is an array before proceeding
+        if (Array.isArray(taskActivities)) {
+            const desiredActivity = taskActivities.find(activity => activity.id === activityId); // Compare as strings
+    
+            if (desiredActivity) {
+                return desiredActivity.name; // Return the activity name if found
+            } else {
+                console.error("Activity not found for ID:", activityId);
+                return 'Unknown'; // Return a default value if not found
+            }
+        } else {
+            console.error("taskActivities is not an array:", taskActivities);
+            return 'Unknown'; // Return a default value if taskActivities is not ready
+        }
+    };
+    
     
     
     return (
@@ -439,7 +501,7 @@ const Engagements = () => {
                         {errorMessage && <div className="error-message">{errorMessage}</div>}
                         {errorMessage && <p className="error-message">{errorMessage}</p>}
                         <button className="add-engagement-button" type="submit">{isEditing ? 'Update Engagement' : 'Add Engagement'}</button>
-                        {isEditing && <button type="button" onClick={resetForm}>Cancel</button>}
+                        {isEditing && <button type="cancel-engagement-button" onClick={resetForm}>Cancel</button>}
                     </form>
 
                     <WeeklyGanttChart engagements={engagements} />
@@ -513,6 +575,7 @@ const Engagements = () => {
                 tasks={tasks} 
                 handleEditTask={handleEditTask} 
                 handleDeleteTask={handleDeleteTask} 
+                getActivityNameById={getActivityNameById}
                 />
             </div>
         </div>

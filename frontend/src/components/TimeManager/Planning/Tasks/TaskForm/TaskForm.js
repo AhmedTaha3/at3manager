@@ -57,7 +57,7 @@ const TaskForm = ({
 
                 {/* Category Select */}
                 <label>
-                    Category:
+                    Category: 
                     <select
                         className="add-time-manager-select"
                         value={selectedCategory}
@@ -75,7 +75,7 @@ const TaskForm = ({
 
                 {/* Activity Select */}
                 <label>
-                    Activity:
+                    Activity: 
                     <select
                         className="add-time-manager-select"
                         value={selectedActivity}

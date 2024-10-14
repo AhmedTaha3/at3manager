@@ -21,5 +21,5 @@ if (mysqli_query($conn, $sql)) {
     echo json_encode(["message" => "Error: " . mysqli_error($conn)]);
 }
 
-mysqli_close($conn);
+mysqli_close($conn);  
 ?>
