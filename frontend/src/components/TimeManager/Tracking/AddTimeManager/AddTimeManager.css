@@ -4,7 +4,10 @@
     font-family: Arial, sans-serif;
     padding: 20px;
     max-width: 400px;
-    margin: auto;
+    align-items: start;
+    display: flex;
+    flex-direction: row;
+    margin-left: 0px;
   }
   
   .add-time-manager-title {
@@ -111,6 +114,7 @@
   }
   
   .center-buttons{
+    margin-left: 20px;
     display: flex;
     justify-content: space-between;
   }
@@ -143,5 +147,142 @@
 
 .history-button{
   display: flex;
+  justify-content: space-evenly;
+}
+
+
+ .styled-table {
+  /* position: absolute; */
+  margin:0px;
+  margin-top: 20px;
+  margin-left: 10px;
+  width: 50% !important;
+  border-collapse: collapse;
+  font-family: 'Arial', sans-serif;
+  font-size: 16px;
+  background-color: #fff; /* Ensure the table background matches the page */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Add a subtle shadow to lift the table off the page */
+  border-radius: 8px; /* Rounded corners for a softer look */
+  overflow: hidden; /*Ensures rounded corners apply*/
+}
+
+ .styled-table thead {
+  background-color: #b93131; /* Color theme */
+  color: #fff; /* White text for contrast */
+  text-align: left;
+  font-weight: bold;
+  border-radius: 8px 8px 0 0; /* Rounded corners at the top */
+}
+
+ .styled-table thead th {
+  white-space: nowrap;
+  padding: 8px;
+  font-size: 16px;
+  font-weight: bolder;
+  text-transform: uppercase; /* Make text uppercase for a modern look */
+  letter-spacing: 0.1em; /* Slight spacing between letters for readability */
+  transition: background-color 0.3s ease; /* Smooth background color transition */
+}
+
+ .styled-table thead th:hover {
+  background-color: #a02e2e; /* Slightly darker red on hover */
+}
+
+ .styled-table th, .styled-table td {
+  border-bottom: 1px solid #ddd;
+}
+
+ .styled-table thead th:first-child {
+  border-top-left-radius: 8px; /* Rounded top-left corner */
+}
+
+ .styled-table thead th:last-child {
+  border-top-right-radius: 8px; /* Rounded top-right corner */
+}
+
+ .styled-table th,  .styled-table td {
+  white-space: nowrap;
+  padding: 8px 8px; /* Slightly wider padding for better spacing */
+  text-align: left;
+  border-bottom: 1px solid #e0e0e0; /* Lighten the border color for a more modern look */
+  transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition on hover */
+}
+
+ .styled-table th {
+  background-color: #f9f9f9; /* Slightly lighter background for the header */
+  color: #333; /* Darker text color for better readability */
+  font-weight: 600; /* Bold the header text */
+  text-transform: uppercase; /* Make the header text uppercase */
+  letter-spacing: 0.05em; /* Add some spacing between letters */
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+ .styled-table tbody tr:hover {
+  background-color: rgba(185, 49, 49, 0.1); /* Softer hover effect */
+  cursor: pointer;
+  transform: scale(1.02); /* Slightly enlarge the row on hover */
+  transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth hover effect */
+}
+
+ .styled-table tbody tr:nth-child(even) {
+  background-color: #f3f3f3; /* Zebra striping for easier readability */
+}
+
+ .styled-table tbody tr {
+  transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth transition for rows */
+}
+
+ .styled-table td {
+  color: #555; /* Softer text color for readability */
+}
+
+ .styled-table tbody tr:active {
+  background-color: rgba(185, 49, 49, 0.3); /* Darken the background on click */
+  transform: scale(0.98); /* Slightly shrink the row on click for feedback */
+  transition: transform 0.1s ease; /* Quick response on click */
+}
+
+ .styled-table tbody tr.hover-edit {
+  background-color: rgba(76, 175, 80, 0.2); /* Green for edit hover */
+}
+
+ .styled-table tbody tr.hover-delete {
+  background-color: rgba(244, 67, 54, 0.2); /* Red for delete hover */
+}
+
+ .button-container {
+  display: flex;
+  align-items: center;
   justify-content: space-around;
+  margin: 0px;
+}
+
+
+ .styled-table input[type="radio"] {
+  position: relative;
+  z-index: 2; /* Ensure the radio button is above other elements */
+}
+
+ .styled-table tbody tr:hover {
+  transform: none; /* Disable scaling */
+  background-color: rgba(185, 49, 49, 0.1); /* Keep background change */
+}
+
+ .styled-table tbody tr td:hover {
+  transform: none; /* Prevent scaling on hover for individual cells */
+  background-color: rgba(185, 49, 49, 0.1);
+}
+ .styled-table td {
+  pointer-events: auto; /* Ensure click events are allowed */
+}
+
+ .styled-table input[type="radio"] {
+  pointer-events: auto; /* Allow pointer events for radio buttons */
+}
+
+.tabe-and-buttons{
+  display: flex;
+  flex: row;
 }

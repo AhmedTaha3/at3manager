@@ -3,25 +3,49 @@ import axios from 'axios';
 import { useNavigate, Outlet, useLocation } from 'react-router-dom';
 import '../Tracking/ConfigureTimeManager/ConfigureTimeManager.css'; // Use the same styles as ConfigureTimeManager
 
-const Database = () => {
+const History = () => {
     const navigate = useNavigate();
     const [timeManagers, setTimeManagers] = useState([]);
-    const [form, setForm] = useState({ activity: '', category: '', startTime: '', endTime: '', duration: '', day: '', date: '' });
+    const [form, setForm] = useState({ task_id:  '', startTime: '', endTime: '', duration: '', day: '', date: '' });
     const [isEditing, setIsEditing] = useState(false);
     const [editId, setEditId] = useState(null);
     const [errorMessage, setErrorMessage] = useState('');
     const apiBaseUrl = process.env.REACT_APP_API_BASE_URL;
-    const apiUrl = `${apiBaseUrl}/at3manager/backend/routes/TimeManager/operations`;
-    const [activity, setActivity] = useState('');
-    const [categories, setCategories] = useState([]);
-    const [selectedCategory, setSelectedCategory] = useState('');
-    const [selectedActivity, setSelectedActivity] = useState('');
-    const [activities, setActivities] = useState([]);
-    const [category, setCategory] = useState('');
+    const apiUrl = `${apiBaseUrl}/at3manager/backend/routes/TimeManager/operations/Tracking/time/`;
+    const taskUrl = `${apiBaseUrl}/at3manager/backend/routes/TimeManager/operations/Tracking/get_tasks_by_date.php`;
+    const [tasks, setTasks] = useState([]);
+    const [selectedTask, setSelectedTask] = useState('');
+    const [filters, setFilters] = useState({ date: new Date().toISOString().slice(0, 10) }); 
+
     useEffect(() => {
         fetchTimeManagers();
     }, []);
 
+    const fetchTasks = async (selectedDate) => {
+        try {
+            const response = await axios.get(taskUrl, {
+                headers: {
+                    'X-Date' : selectedDate
+                }
+            });
+            setTasks(response.data);
+        } catch (error) {
+            console.error("Error fetching tasks:", error);
+        }
+    };
+    
+
+    const handleDateChange = (e) => {
+        const selectedDate = e.target.value;
+        setFilters({ ...filters, date: selectedDate });
+        fetchTasks(selectedDate);  // Call the fetchTasks function with the selected date
+    };
+
+    
+    
+    
+    
+      
     const fetchTimeManagers = async () => {
         try {
             const response = await axios.get(`${apiUrl}/get_timemanager.php`);
@@ -58,7 +82,7 @@ const Database = () => {
                 await axios.post(`${apiUrl}/add_timemanager.php`, requestData);
             }
             fetchTimeManagers();
-            setForm({ activity: '', category: '', startTime: '', endTime: '', duration: '', day: '', date: '' });
+            setForm({task_id: '', activity: '', category: '', startTime: '', endTime: '', duration: '', day: '', date: '' });
             setIsEditing(false);
         } catch (error) {
             console.error('Error submitting form:', error);
@@ -74,12 +98,20 @@ const Database = () => {
             endTime: timeManager.endTime,
             duration: timeManager.duration,
             day: timeManager.day,
-            date: timeManager.date
+            task_id: timeManager.task_id,
+            date: timeManager.date,
         });
+    
+        // Set the selected task and date
+        setSelectedTask(String(timeManager.task_id)); // Ensure it's a string for comparison
+        setFilters({ ...filters, date: timeManager.date }); // Set the date to the one being edited
+        
         setIsEditing(true);
         setEditId(timeManager.id);
         window.scrollTo({ top: 0, behavior: 'smooth' });
     };
+    
+    
 
     const handleDelete = async (id) => {
         const confirmDelete = window.confirm('Are you sure you want to delete this entry?');
@@ -92,6 +124,12 @@ const Database = () => {
             }
         }
     };
+
+    useEffect(() => {
+        if (filters.date) {
+            fetchTasks(filters.date); // Fetch tasks for the selected date
+        }
+    }, [filters.date]); // Trigger when filters.date changes
     // duration
     const calculateDuration = (start, end) => {
         const startTime = new Date(start);
@@ -135,51 +173,7 @@ const Database = () => {
     };
     
     
-    // fetch categories and activities
-  useEffect(() => {
-    fetchCategories();
-    }, []);
-
-    const fetchCategories = async () => {
-        try {
-            const response = await axios.get(`${apiBaseUrl}/at3manager/backend/routes/TimeManager/configuration/get_categories.php`);
-            if (Array.isArray(response.data)) {
-                setCategories(response.data);
-            } else {
-                console.error('Unexpected response format:', response.data);
-                setCategories([]);
-            }
-        } catch (error) {
-            console.error('Error fetching categories:', error);
-            setCategories([]);
-        }
-    };
-
-    const handleCategoryChange = (e) => {
-      const categoryId = e.target.value;
-      setSelectedCategory(categoryId);
     
-      
-      const selectedCat = categories.find(category => category.id === categoryId);
-      const cat = selectedCat.name;
-      console.log("Selected Category ID:", cat); // Debugging
-      if (selectedCat) {
-        setActivities(selectedCat.activities);
-        setCategory(cat);
-        form.category=cat;
-      } else {
-        setActivities([]);
-      }
-    };
-    
-    const handleActivityChange = (e) => {
-      const activityId = e.target.value;
-      const selectedAct = activities.find(activity => activity.id === activityId).name;
-      setSelectedActivity(activityId);
-      setActivity(selectedAct);
-      form.activity=selectedAct;
-      console.log("Selected Activity ID:", selectedAct); // Debugging
-    };
     
 
 
@@ -191,44 +185,42 @@ const Database = () => {
                 </div>
                 
                 {/* Input fields for the form */}
-                <label>
-                    Category: {isEditing && form.category}
-                    <select
-                        className="add-time-manager-select"
-                        value={selectedCategory}
-                        onChange={handleCategoryChange}
-                        required
-                    >
-                        <option value="" disabled>
-                        Select Category
-                        </option>
-                        {categories.map((category) => (
-                        <option key={category.id} value={category.id}>
-                            {category.name}
-                        </option>
-                        ))}
-                    </select>
-                    </label>
+                <input type="date" className="filter-date" value={filters.date} onChange={handleDateChange} />
 
-                    {/* Activity Select */}
-                    <label>
-                    Activity: {isEditing && form.activity}
-                    <select
-                        className="add-time-manager-select"
-                        value={selectedActivity}
-                        onChange={handleActivityChange}
-                        required
-                    >
-                        <option value="" disabled>
-                        Select Activity
-                        </option>
-                        {activities.map((activity) => (
-                        <option key={activity.id} value={activity.id}>
-                            {activity.name}
-                        </option>
+                <div>
+                    <table className="styled-table">
+                        <thead>
+                        <tr>
+                            <th>Select</th>
+                            <th>Task Name</th>
+                            <th>Deadline</th>
+                            <th>Estimated Time</th>
+                            <th>Worked Time</th>
+                        </tr>
+                        </thead>
+                        {tasks.map((task) => (
+                            <tr key={task.id}>
+                                <td>
+                                    <input
+                                        type="radio"
+                                        name="task"
+                                        value={task.id} // Keep this as is, task.id will be a number
+                                        checked={selectedTask === String(task.id)} // Convert task.id to string for comparison
+                                        onChange={(e) => {
+                                            setSelectedTask(e.target.value); // e.target.value is already a string
+                                            setForm({ ...form, task_id: Number(e.target.value) }); // Convert to number for form submission
+                                        }}
+                                    />
+                                </td>
+                                <td>{task.name}</td>
+                                <td>{task.deadline}</td>
+                                <td>{task.estimated_time}</td>
+                                <td>{task.worked_time}</td>
+                            </tr>
                         ))}
-                    </select>
-                    </label>
+
+                    </table>
+                    </div>
                 
                 <label>Start Time:</label>
                 <input 
@@ -270,9 +262,10 @@ const Database = () => {
                         <th>Day</th>
                         <th>Activity</th>
                         <th>Duration</th>
-                        <th>Category</th>
+                        {/* <th>Category</th> */}
                         <th>Start Time</th>
                         <th>End Time</th>
+                        <th>Task id</th>
                         <th>Update</th>
                         <th>Delete</th>
                     </tr>
@@ -285,9 +278,10 @@ const Database = () => {
                                 <td>{timeManager.day}</td>
                                 <td>{timeManager.activity}</td>
                                 <td>{timeManager.duration}</td>
-                                <td>{timeManager.category}</td>
+                                {/* <td>{timeManager.category}</td> */}
                                 <td>{displayTime(timeManager.startTime)}</td>
                                 <td>{displayTime(timeManager.endTime)}</td> 
+                                <td>{timeManager.task_id}</td>
                                 <td>
                                     <button 
                                         className='edit-category-button' 
@@ -317,4 +311,4 @@ const Database = () => {
     );
 };
 
-export default Database;
+export default History;

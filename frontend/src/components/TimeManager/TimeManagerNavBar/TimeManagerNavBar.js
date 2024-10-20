@@ -43,8 +43,8 @@ const TimeManagerNavBar = () => {
                     </Button>
                     <Button 
                         color="inherit" 
-                        onClick={() => navigate('/timemanager/activities')} 
-                        className={`main-button ${activeSection === '/timemanager/activities' ? 'active' : ''}`}>
+                        onClick={() => navigate('/timemanager/evaluating')} 
+                        className={`main-button ${activeSection === '/timemanager/evaluating' ? 'active' : ''}`}>
                         Evaluating
                     </Button>
                 </Toolbar>
