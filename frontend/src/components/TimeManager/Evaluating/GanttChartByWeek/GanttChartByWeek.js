@@ -45,28 +45,12 @@ const timeToPosition = (time) => {
     return hours + minutes / 60; // Convert to hours
 };
 
-// Tooltip component for activity details with dynamic position
-const CustomTooltip = ({ activity, position }) => {
-    // Format the start and end times to HH:mm
-    const formattedStartTime = formatTime(activity.startTime);
-    const formattedEndTime = formatTime(activity.endTime);
-    const duration = (timeToPosition(activity.endTime) - timeToPosition(activity.startTime)).toFixed(2);
 
-    return (
-        <div className="custom-tooltip" style={{ top: position.top, left: position.left }}>
-            <h4>Activity Details</h4>
-            <p><strong>Start Time:</strong> {formattedStartTime}</p>
-            <p><strong>End Time:</strong> {formattedEndTime}</p>
-            <p><strong>Duration:</strong> {duration} hours</p>
-        </div>
-    );
-};
 
 
 const GanttChartByWeek = () => {
     const apiBaseUrl = process.env.REACT_APP_API_BASE_URL;
     const apiUrl = `${apiBaseUrl}/at3manager/backend/routes/TimeManager/operations/Evaluating/get_timeManager_by_week.php`;
-    
     const [tooltipData, setTooltipData] = useState(null);
     const [tooltipPosition, setTooltipPosition] = useState({ top: 0, left: 0 });
     const [timeManagerData, setTimeManagerData] = useState([]); // State to hold fetched data
@@ -76,6 +60,7 @@ const GanttChartByWeek = () => {
     const endDate = dateRange[dateRange.length - 1].date; // Sunday
     const formattedStartDate = formatDate(new Date(startDate));
     const formattedEndDate = formatDate(new Date(endDate));
+    const [activities, setActivities] = useState('')
 
     useEffect(() => {
         // Fetch data from the API
@@ -100,6 +85,25 @@ const GanttChartByWeek = () => {
 
         fetchData(); // Call the fetch function
     }, [currentDate]); // Fetch data when currentDate changes
+
+    
+    // Tooltip component for activity details with dynamic position
+    const CustomTooltip = ({ activity, position }) => {
+        // Format the start and end times to HH:mm
+        const formattedStartTime = formatTime(activity.startTime);
+        const formattedEndTime = formatTime(activity.endTime);
+        const duration = (timeToPosition(activity.endTime) - timeToPosition(activity.startTime)).toFixed(2);
+    
+        return (
+            <div className="custom-tooltip" style={{ top: position.top, left: position.left }}>
+                <h4>Activity Details</h4>
+                <p><strong>Name:</strong> {activity.activity}</p>
+                <p><strong>Start Time:</strong> {formattedStartTime}</p>
+                <p><strong>End Time:</strong> {formattedEndTime}</p>
+                <p><strong>Duration:</strong> {duration} hours</p>
+            </div>
+        );
+    };
 
     // Handle showing tooltip on hover
     const handleMouseEnter = (activity, e) => {
@@ -265,6 +269,7 @@ const GanttChartByWeek = () => {
             {tooltipData && (
                 <CustomTooltip
                     activity={tooltipData}
+                    name={tooltipData.name}
                     startTime={tooltipData.startTime}
                     endTime={tooltipData.endTime}
                     duration={(timeToPosition(tooltipData.endTime) - timeToPosition(tooltipData.startTime)).toFixed(2)}

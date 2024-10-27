@@ -1,12 +1,25 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import GanttChartByWeek from './GanttChartByWeek/GanttChartByWeek';
-import HistogramByWeek from './HistogramByWeek/HistogramByWeek'
+import HistogramByWeek from './HistogramByWeek/HistogramByWeek';
+import HistogramByMonth from './HistogramByMonth/HistogramByMonth';
+import HistogramByWeekByActivity from './HistorgamByWeekByActivity/HistorgamByWeekByActivity';
+import HistogramByMonthByActivity from './HistogramByMonthByActivity/HistogramByMonthByActivity';
+import './Evaluating.css'; 
 const Evaluating =  ()=> {
     return(
         <div>
-            {/* <GanttChartByWeek/> */}
-            <HistogramByWeek/>
+            <div>
+                <GanttChartByWeek/>   
+            </div>
+            <div className='evaluation-container'>
+                <HistogramByWeek/>
+                <HistogramByMonth/>
+            </div>
+            <div className='evaluation-container'>
+                <HistogramByWeekByActivity/>
+                <HistogramByMonthByActivity/>
+            </div>
         </div>
     );
 }

@@ -1,26 +1,17 @@
-.histogram-container {
-    padding: 20px;
+/* HistogramByWeek.css */
+
+
+
+.bar-chart-container {
+    width: 100%; /* Set your preferred width */
+    margin: 0 auto;
+   
 }
 
-.histogram {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-    height: 300px; /* Adjust as needed */
+.bar-chart-container .recharts-wrapper {
+    font-size: 14px; /* Control font size inside chart */
 }
 
-.histogram-bar {
-    width: 10%; /* Adjust width for each bar */
-    position: relative;
-}
-
-.histogram-label {
-    text-align: center;
-    margin-bottom: 5px;
-}
-
-.histogram-value {
-    width: 100%;
-    background-color: #4caf50;
-    transition: height 0.3s;
+.bar {
+    fill: #b93131; /* Bar color */
 }

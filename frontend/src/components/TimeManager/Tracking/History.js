@@ -13,6 +13,7 @@ const History = () => {
     const apiBaseUrl = process.env.REACT_APP_API_BASE_URL;
     const apiUrl = `${apiBaseUrl}/at3manager/backend/routes/TimeManager/operations/Tracking/time/`;
     const taskUrl = `${apiBaseUrl}/at3manager/backend/routes/TimeManager/operations/Tracking/get_tasks_by_date.php`;
+    const updateTaskUrl = `${apiBaseUrl}/at3manager/backend/routes/TimeManager/operations/Planning/tasks/update_task.php`;
     const [tasks, setTasks] = useState([]);
     const [selectedTask, setSelectedTask] = useState('');
     const [filters, setFilters] = useState({ date: new Date().toISOString().slice(0, 10) }); 
@@ -69,9 +70,9 @@ const History = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setErrorMessage('');
-
+    
         const requestData = { ...form };
-
+    
         try {
             if (isEditing) {
                 await axios.post(`${apiUrl}/update_timemanager.php`, {
@@ -81,14 +82,53 @@ const History = () => {
             } else {
                 await axios.post(`${apiUrl}/add_timemanager.php`, requestData);
             }
+    
+            // Find the current worked_time of the selected task
+            const selectedTaskData = tasks.find(task => task.id === Number(selectedTask));
+            if (selectedTaskData && !isEditing) {
+                const currentWorkedTime = selectedTaskData.worked_time;
+    
+                // Convert current worked_time and duration to seconds
+                const currentWorkedSeconds = timeToSeconds(currentWorkedTime);
+                const durationSeconds = timeToSeconds(form.duration);
+    
+                // Add the two times together
+                const updatedWorkedTimeSeconds = currentWorkedSeconds + durationSeconds;
+    
+                // Convert back to HH:MM:SS format
+                const updatedWorkedTime = secondsToTime(updatedWorkedTimeSeconds);
+                
+                // Update the worked_time in the backend
+                await axios.post(`${updateTaskUrl}`, {
+                    id: selectedTask,
+                    worked_time: updatedWorkedTime
+                });
+            }
+    
             fetchTimeManagers();
-            setForm({task_id: '', activity: '', category: '', startTime: '', endTime: '', duration: '', day: '', date: '' });
+            setForm({ task_id: '', activity: '', category: '', startTime: '', endTime: '', duration: '', day: '', date: '' });
             setIsEditing(false);
         } catch (error) {
             console.error('Error submitting form:', error);
             setErrorMessage('Failed to submit the form. Please try again.');
         }
     };
+    
+    // Helper function to convert HH:MM:SS to total seconds
+    const timeToSeconds = (time) => {
+        const [hours, minutes, seconds] = time.split(':').map(Number);
+        return hours * 3600 + minutes * 60 + seconds;
+    };
+    
+    // Helper function to convert seconds to HH:MM:SS
+    const secondsToTime = (totalSeconds) => {
+        const hours = Math.floor(totalSeconds / 3600).toString().padStart(2, '0');
+        const minutes = Math.floor((totalSeconds % 3600) / 60).toString().padStart(2, '0');
+        const seconds = (totalSeconds % 60).toString().padStart(2, '0');
+        return `${hours}:${minutes}:${seconds}`;
+    };
+    
+    
 
     const handleEdit = (timeManager) => {
         setForm({
@@ -265,7 +305,6 @@ const History = () => {
                         {/* <th>Category</th> */}
                         <th>Start Time</th>
                         <th>End Time</th>
-                        <th>Task id</th>
                         <th>Update</th>
                         <th>Delete</th>
                     </tr>
@@ -281,7 +320,6 @@ const History = () => {
                                 {/* <td>{timeManager.category}</td> */}
                                 <td>{displayTime(timeManager.startTime)}</td>
                                 <td>{displayTime(timeManager.endTime)}</td> 
-                                <td>{timeManager.task_id}</td>
                                 <td>
                                     <button 
                                         className='edit-category-button' 

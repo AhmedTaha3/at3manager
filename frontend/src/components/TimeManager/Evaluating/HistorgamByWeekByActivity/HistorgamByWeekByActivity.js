@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
 import axios from 'axios';
-import './HistogramByWeek.css'; // Import the CSS file
+import './HistorgamByWeekByActivity.css'; // Import the CSS file
 
-const HistogramByWeek = () => {
-    const [timeManagerData, setTimeManagerData] = useState([]);
+const HistogramByWeekByActivity = () => {
+    const [activityData, setActivityData] = useState([]);
     const [totalDuration, setTotalDuration] = useState('00:00');
     const [dailyAverage, setDailyAverage] = useState('00:00');
     const [currentWeekStartDate, setCurrentWeekStartDate] = useState(new Date());
@@ -19,12 +19,9 @@ const HistogramByWeek = () => {
     const formatDate = (date) => {
         const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
         const dayName = dayNames[date.getDay()];
-        const month = String(date.getMonth() + 1).padStart(2, '0');
-        const day = String(date.getDate()).padStart(2, '0');
-        const year = date.getFullYear();
-        // return `${dayName}, ${month}/${day}/${year}`;
         return `${dayName}`;
     };
+
     const formatDate2 = (date) => {
         const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
         const dayName = dayNames[date.getDay()];
@@ -32,20 +29,20 @@ const HistogramByWeek = () => {
         const day = String(date.getDate()).padStart(2, '0');
         const year = date.getFullYear();
         return `${dayName}, ${month}/${day}/${year}`;
-        // return `${dayName}`;
     };
 
     const fetchData = async (date) => {
         const apiBaseUrl = process.env.REACT_APP_API_BASE_URL;
-        const apiUrl = `${apiBaseUrl}/at3manager/backend/routes/TimeManager/operations/Evaluating/histogram_by_week.php`;
+        const apiUrl = `${apiBaseUrl}/at3manager/backend/routes/TimeManager/operations/Evaluating/histogram_by_week_by_activity.php`; // Updated endpoint
+
         const formattedDate = date.toISOString().split('T')[0];
 
         try {
             const response = await axios.get(apiUrl, {
                 headers: { 'X-Date': formattedDate }
             });
-            const { days } = response.data;
-            setTimeManagerData(days);
+            const { activities } = response.data;
+            setActivityData(activities);
         } catch (error) {
             console.error('Error fetching data', error);
         }
@@ -54,8 +51,8 @@ const HistogramByWeek = () => {
     const calculateDurations = () => {
         let totalDurationInMinutes = 0;
 
-        timeManagerData.forEach(day => {
-            const durationParts = day.total_duration.split(':');
+        activityData.forEach(activity => {
+            const durationParts = activity.total_duration.split(':');
             const hours = parseInt(durationParts[0], 10);
             const minutes = parseInt(durationParts[1], 10);
             const seconds = parseInt(durationParts[2], 10);
@@ -83,7 +80,7 @@ const HistogramByWeek = () => {
 
     useEffect(() => {
         calculateDurations();
-    }, [timeManagerData]);
+    }, [activityData]);
 
     const goToPreviousWeek = () => {
         const previousWeekStartDate = new Date(currentWeekStartDate);
@@ -99,16 +96,10 @@ const HistogramByWeek = () => {
         fetchData(nextWeekStartDate);
     };
 
-    const getEndOfWeek = (startDate) => {
-        const endDate = new Date(startDate);
-        endDate.setDate(startDate.getDate() + 6);
-        return endDate;
-    };
-
-    const chartData = timeManagerData.map(day => ({
-        date: formatDate(new Date(day.date)),
+    const chartData = activityData.map(activity => ({
+        activity: activity.activity,
         durationInHours: (() => {
-            const [hours, minutes] = day.total_duration.split(':').map(Number);
+            const [hours, minutes] = activity.total_duration.split(':').map(Number);
             return hours + minutes / 60;
         })()
     }));
@@ -121,7 +112,7 @@ const HistogramByWeek = () => {
                 <div className="week-range">
                     FROM {formatDate2(currentWeekStartDate)}
                     <br />
-                    TO {formatDate2(getEndOfWeek(currentWeekStartDate))}
+                    TO {formatDate2(new Date(currentWeekStartDate.getTime() + 6 * 24 * 60 * 60 * 1000))}
                 </div>
                 <button onClick={goToNextWeek}>{">"}</button>
                 <p>Next Week</p>
@@ -137,10 +128,10 @@ const HistogramByWeek = () => {
             <div className="bar-chart-container">
                 <ResponsiveContainer width="100%" height={400}>
                     <BarChart data={chartData}>
-                        <XAxis dataKey="date" tick={{ fontSize: 14}} interval={0}/>
+                        <XAxis dataKey="activity" tick={{ fontSize: 10 }} interval={0} />
                         <YAxis tick={{ fontSize: 14 }} />
                         <Tooltip formatter={(value) => `${value.toFixed(2)} hours`} />
-                        <Bar dataKey="durationInHours" fill="#b93131" className="bar" />
+                        <Bar dataKey="durationInHours" fill="#b93131" />
                     </BarChart>
                 </ResponsiveContainer>
             </div>
@@ -148,4 +139,4 @@ const HistogramByWeek = () => {
     );
 };
 
-export default HistogramByWeek;
+export default HistogramByWeekByActivity;
