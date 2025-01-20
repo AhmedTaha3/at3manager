@@ -75,34 +75,58 @@ const History = () => {
     
         try {
             if (isEditing) {
+                // Fetch the current worked_time and duration for the selected task
+                const selectedTaskData = tasks.find(task => task.id === Number(selectedTask));
+                if (selectedTaskData) {
+                    const currentWorkedTime = selectedTaskData.worked_time;
+                    const currentDuration = timeManagers.find(tm => tm.id === editId).duration;
+
+                    // Convert current worked_time and durations to seconds
+                    const currentWorkedSeconds = timeToSeconds(currentWorkedTime);
+                    const currentDurationSeconds = timeToSeconds(currentDuration);
+                    const newDurationSeconds = timeToSeconds(form.duration);
+                    
+                    // Subtract the old duration and add the new duration
+                    const updatedWorkedTimeSeconds = currentWorkedSeconds - currentDurationSeconds + newDurationSeconds;
+
+                    // Convert back to HH:MM:SS format
+                    const updatedWorkedTime = secondsToTime(updatedWorkedTimeSeconds);
+
+                    // Update the worked_time in the backend
+                    await axios.post(`${updateTaskUrl}`, {
+                        id: selectedTask,
+                        worked_time: updatedWorkedTime
+                    });
+                }
+
                 await axios.post(`${apiUrl}/update_timemanager.php`, {
                     id: editId,
                     ...requestData
                 });
             } else {
                 await axios.post(`${apiUrl}/add_timemanager.php`, requestData);
-            }
-    
-            // Find the current worked_time of the selected task
-            const selectedTaskData = tasks.find(task => task.id === Number(selectedTask));
-            if (selectedTaskData && !isEditing) {
-                const currentWorkedTime = selectedTaskData.worked_time;
-    
-                // Convert current worked_time and duration to seconds
-                const currentWorkedSeconds = timeToSeconds(currentWorkedTime);
-                const durationSeconds = timeToSeconds(form.duration);
-    
-                // Add the two times together
-                const updatedWorkedTimeSeconds = currentWorkedSeconds + durationSeconds;
-    
-                // Convert back to HH:MM:SS format
-                const updatedWorkedTime = secondsToTime(updatedWorkedTimeSeconds);
-                
-                // Update the worked_time in the backend
-                await axios.post(`${updateTaskUrl}`, {
-                    id: selectedTask,
-                    worked_time: updatedWorkedTime
-                });
+
+                // Find the current worked_time of the selected task
+                const selectedTaskData = tasks.find(task => task.id === Number(selectedTask));
+                if (selectedTaskData) {
+                    const currentWorkedTime = selectedTaskData.worked_time;
+
+                    // Convert current worked_time and duration to seconds
+                    const currentWorkedSeconds = timeToSeconds(currentWorkedTime);
+                    const durationSeconds = timeToSeconds(form.duration);
+
+                    // Add the new duration to the current worked_time
+                    const updatedWorkedTimeSeconds = currentWorkedSeconds + durationSeconds;
+
+                    // Convert back to HH:MM:SS format
+                    const updatedWorkedTime = secondsToTime(updatedWorkedTimeSeconds);
+
+                    // Update the worked_time in the backend
+                    await axios.post(`${updateTaskUrl}`, {
+                        id: selectedTask,
+                        worked_time: updatedWorkedTime
+                    });
+                }
             }
     
             fetchTimeManagers();

@@ -92,7 +92,7 @@ const GanttChartByWeek = () => {
         // Format the start and end times to HH:mm
         const formattedStartTime = formatTime(activity.startTime);
         const formattedEndTime = formatTime(activity.endTime);
-        const duration = (timeToPosition(activity.endTime) - timeToPosition(activity.startTime)).toFixed(2);
+        const duration = convertToHHMM((timeToPosition(activity.endTime)*60 - timeToPosition(activity.startTime)*60));
     
         return (
             <div className="custom-tooltip" style={{ top: position.top, left: position.left }}>
@@ -100,7 +100,7 @@ const GanttChartByWeek = () => {
                 <p><strong>Name:</strong> {activity.activity}</p>
                 <p><strong>Start Time:</strong> {formattedStartTime}</p>
                 <p><strong>End Time:</strong> {formattedEndTime}</p>
-                <p><strong>Duration:</strong> {duration} hours</p>
+                <p><strong>Duration:</strong> {duration}</p>
             </div>
         );
     };
@@ -169,7 +169,11 @@ const GanttChartByWeek = () => {
             };
         };
 
-
+        const convertToHHMM = (totalMinutes) => {
+            const hours = Math.floor(totalMinutes / 60);
+            const minutes = totalMinutes % 60;
+            return `${hours}:${String(minutes).padStart(2, '0')}`; // Format to hh:mm
+        };
 
 
 
@@ -272,7 +276,7 @@ const GanttChartByWeek = () => {
                     name={tooltipData.name}
                     startTime={tooltipData.startTime}
                     endTime={tooltipData.endTime}
-                    duration={(timeToPosition(tooltipData.endTime) - timeToPosition(tooltipData.startTime)).toFixed(2)}
+                    duration={convertToHHMM((timeToPosition(tooltipData.endTime)*60 - timeToPosition(tooltipData.startTime)*60))}
                     position={tooltipPosition}
                 />
             )}

@@ -82,7 +82,11 @@ const HistogramByMonth = () => {
         setTotalDuration(convertToHHMM(totalDurationInMinutes));
         setDailyAverage(convertToHHMM(dailyAverageInMinutes));
     };
-
+    const convertToHHMM = (totalMinutes) => {
+        const hours = Math.floor(totalMinutes / 60);
+        const minutes = totalMinutes % 60;
+        return `${hours}:${String(minutes).padStart(2, '0')}`; // Format to hh:mm
+    };
     
     useEffect(() => {
         const firstDayOfCurrentMonth = getFirstDayOfMonth(new Date());
@@ -114,7 +118,7 @@ const HistogramByMonth = () => {
 
     const chartData = timeManagerData.map(day => ({
         date: formatDate2(new Date(day.date)),
-        durationInHours: (() => {
+        TimeSpent: (() => {
             const [hours, minutes] = day.total_duration.split(':').map(Number);
             return hours + minutes / 60;
         })()
@@ -144,8 +148,8 @@ const HistogramByMonth = () => {
                     <BarChart data={chartData}>
                         <XAxis dataKey="date" tick={{ fontSize: 14 }}  />
                         <YAxis tick={{ fontSize: 14 }} />
-                        <Tooltip formatter={(value) => `${value.toFixed(2)} hours`} />
-                        <Bar dataKey="durationInHours" fill="#b93131" className="bar" />
+                        <Tooltip formatter={(value) => `${convertToHHMM(value*60)}`} />
+                        <Bar dataKey="TimeSpent" fill="#b93131" className="bar" />
                     </BarChart>
                 </ResponsiveContainer>
             </div>

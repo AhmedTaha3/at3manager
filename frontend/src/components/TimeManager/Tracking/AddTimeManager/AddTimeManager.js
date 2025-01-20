@@ -7,7 +7,7 @@ function AddTimeManager() {
   const navigate = useNavigate();
   const apiBaseUrl = process.env.REACT_APP_API_BASE_URL;
   const trackingUrl = `${apiBaseUrl}/at3manager/backend/routes/TimeManager/operations/Tracking/time`;
-  const taskUrl = `${apiBaseUrl}/at3manager/backend/routes/TimeManager/operations/Planning/tasks/get_tasks.php`;
+  const taskUrl = `${apiBaseUrl}/at3manager/backend/routes/TimeManager/operations/Tracking/get_tasks_by_date.php`;
 
   const [tasks, setTasks] = useState([]);
   const [selectedTask, setSelectedTask] = useState('');
@@ -77,6 +77,16 @@ function AddTimeManager() {
     const seconds = Math.floor(diff % 60);
 
     return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+  };
+
+  const calculateAccomplishmentRate = (workedTime, estimatedTime) => {
+    const [workedHours, workedMinutes, workedSeconds] = workedTime.split(':').map(Number);
+    const [estimatedHours, estimatedMinutes, estimatedSeconds] = estimatedTime.split(':').map(Number);
+
+    const workedTotalSeconds = workedHours * 3600 + workedMinutes * 60 + workedSeconds;
+    const estimatedTotalSeconds = estimatedHours * 3600 + estimatedMinutes * 60 + estimatedSeconds;
+    const rate = (workedTotalSeconds / estimatedTotalSeconds) * 100;
+    return  rate.toFixed(0) + "% ";
   };
 
   const formatDateForDatabase = (isoString) => {
@@ -219,6 +229,7 @@ function AddTimeManager() {
                     <th>Deadline</th>
                     <th>Estimated Time</th>
                     <th>Worked Time</th>
+                    <th>Accomplishment Rate</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -241,6 +252,7 @@ function AddTimeManager() {
                       <td>{task.deadline}</td>
                       <td>{task.estimated_time}</td>
                       <td>{task.worked_time}</td>
+                      <td>{calculateAccomplishmentRate(task.worked_time, task.estimated_time)}</td>
                     </tr>
                   ))}
                 </tbody>

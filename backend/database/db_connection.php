@@ -9,7 +9,7 @@
 $servername = "localhost";
 $username = "root"; // Utilisateur MySQL
 $password = "root"; // Mot de passe MySQL
-$database = "at3manager"; // Nom de votre base de données
+$database = "4571586_at3manager"; // Nom de votre base de données
 
 // Créer une connexion à la base de données
 $conn = new mysqli($servername, $username, $password, $database);

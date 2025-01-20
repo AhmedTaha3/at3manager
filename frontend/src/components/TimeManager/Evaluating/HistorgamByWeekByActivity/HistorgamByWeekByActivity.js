@@ -98,11 +98,17 @@ const HistogramByWeekByActivity = () => {
 
     const chartData = activityData.map(activity => ({
         activity: activity.activity,
-        durationInHours: (() => {
+        TimeSpent: (() => {
             const [hours, minutes] = activity.total_duration.split(':').map(Number);
             return hours + minutes / 60;
         })()
     }));
+
+    const convertToHHMM = (totalMinutes) => {
+        const hours = Math.floor(totalMinutes / 60);
+        const minutes = totalMinutes % 60;
+        return `${hours}:${String(minutes).padStart(2, '0')}`; // Format to hh:mm
+    };
 
     return (
         <div className='gantt-chart-container'>
@@ -130,8 +136,8 @@ const HistogramByWeekByActivity = () => {
                     <BarChart data={chartData}>
                         <XAxis dataKey="activity" tick={{ fontSize: 10 }} interval={0} />
                         <YAxis tick={{ fontSize: 14 }} />
-                        <Tooltip formatter={(value) => `${value.toFixed(2)} hours`} />
-                        <Bar dataKey="durationInHours" fill="#b93131" />
+                        <Tooltip formatter={(value) => `${convertToHHMM(value*60)} `} />
+                        <Bar dataKey="TimeSpent" fill="#b93131" />
                     </BarChart>
                 </ResponsiveContainer>
             </div>

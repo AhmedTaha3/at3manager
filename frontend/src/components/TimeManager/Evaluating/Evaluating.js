@@ -14,11 +14,12 @@ const Evaluating =  ()=> {
             </div>
             <div className='evaluation-container'>
                 <HistogramByWeek/>
-                <HistogramByMonth/>
+                <HistogramByWeekByActivity/>
             </div>
             <div className='evaluation-container'>
-                <HistogramByWeekByActivity/>
+                
                 <HistogramByMonthByActivity/>
+                <HistogramByMonth/>
             </div>
         </div>
     );
