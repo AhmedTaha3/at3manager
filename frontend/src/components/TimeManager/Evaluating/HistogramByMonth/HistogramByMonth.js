@@ -41,7 +41,7 @@ const HistogramByMonth = () => {
     const fetchData = async (date) => {
         const apiBaseUrl = process.env.REACT_APP_API_BASE_URL;
         const apiUrl = `${apiBaseUrl}/at3manager/backend/routes/TimeManager/operations/Evaluating/histogram_by_month.php`;
-        
+        console.log('apiBaseUrl:', apiBaseUrl);
         // Debug: Afficher la date passée à fetchData
         
         
